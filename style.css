@@ -22,16 +22,45 @@
 
 /* Contenitore e console */
 
-#content {
-  border: 10px;
+.content {
+  max-width: 600px;
+  border:solid 5px;
+  border-color: #7fff81;
 }
 .game .playing {
   border: 10px;
 
 }
+.console {
+  max-width: 600px;
+}
+.testo {
+  margin: 0px;
+  padding: 5px;
+}
+
+.lifebar {
+  background-color: #fc8e8e;
+  padding: 0px 3px 0px 3px;
+  width: 18%;
+  float: left;
+}
+.textbar {
+  background-color: #7fff81;
+  width: 80%;
+  float: left;
+  padding: 0px 3px 0px 3px;
+}
+.textbarp{
+  text-align: right;
+}
 
 /* Settaggi del gioco */
+p {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
   .game {
+    clear: both;
     overflow: hidden;
     max-width: 600px;
     max-height: 450px;

@@ -169,13 +169,34 @@ class DOMDisplay {           //utilizzando la funzione elt() vengono inseriti gl
   clear() { this.dom.remove(); }
 }
 
-class DOMConsole {
-  constructor(parent, testo) {
-    this.dom = elt("div", {class: "console"}, creaTesto());
+class DOMLifeBar {
+  constructor(parent) {
+    this.dom = elt("p", {class: "lifebarp"});
     parent.appendChild(this.dom);
-    document.querySelector(".testo").textContent = testo;
   }
+
 }
+class DOMTextBar {
+  constructor(parent) {
+    this.dom = elt("p", {class: "textbarp"});
+    parent.appendChild(this.dom);
+  }
+
+}
+// function creaTextBar(){
+//   let testo = elt("p", {class: "testo"});
+//   return testo
+// }
+
+// function creaBars(){
+
+//   var lifeBar = elt("div", {class: "lifebar"}, creaTesto());
+//   var textBar = elt("div", {class: "textbar"}, creaTesto());
+
+//   return {lifeBar};
+//   }
+
+
 
 
 const scale = 20;   //dimensione del tile (20px x 20px in questo caso)
@@ -395,7 +416,8 @@ function runAnimation(frameFunc) {
 
 // ANIMAZIONE DEL LIVELLO
 function runLevel(level, Display) {
-  let display = new Display(document.body, level);
+  let content = document.querySelector(".content");
+  let display = new Display(content, level);
   let state = State.start(level);
   let ending = 1;
   return new Promise(resolve => {
@@ -417,27 +439,53 @@ function runLevel(level, Display) {
 }
 
 
-function creaTesto(){
-  testo = elt("p", {class: "testo"});
-  return testo
+function setLifeBar(lives , level){
+  var paragrafo = document.querySelector(".lifebarp");
+  var contenuto = "HP: " + lives + " LvL: " + (level+1);
+  console.log(contenuto);  
+  
+  paragrafo.textContent = contenuto;
+
 }
+
+function setTextBar(text){
+  var paragrafo = document.querySelector(".textbarp");
+  var contenuto = text;
+
+  paragrafo.textContent = contenuto;
+}
+
 
 async function runGame(plans, Display) {
     let lives = 3;
-    let consoledigioco = new DOMConsole(document.body, "BLABLABLABLABLABA");
+    let lB = document.querySelector(".lifebar");
+    let tB = document.querySelector(".textbar");
+    let lifebar = new DOMLifeBar(lB);
+    let textbar = new DOMTextBar(tB);
+
 
     for (let level = 0; level < plans.length;) {
-        
-        if(lives != 0){
-            console.log("Vite: " + lives);
-        } else {
-            lives = 4;
-            console.log("Hai perso");
-        }
+
+      if(lives > 1){
+        setTextBar("Il gioco è in corso");
+        setLifeBar(lives, level);
+          //consoledigioco.setTesto(lives);
+          console.log("Vite: " + lives);
+      } else if(lives == 1) {
+        setLifeBar(lives, level);
+        setTextBar("Attento, ultima vita..");        
+      } else {
+        lives = 3;
+        setLifeBar(lives,level);
+        setTextBar("Il gioco è in corso");
+      }
+
       let status = await runLevel(new Level(plans[level]),
-                                  Display);
+      Display);
+
       if (status == "won") level++;
-      lives--;
+      if (status == "lost") lives--;
+
     }
 
     console.log("Hai vinto! Bravo il coglione!");
